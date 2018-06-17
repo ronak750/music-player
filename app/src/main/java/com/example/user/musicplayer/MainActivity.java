@@ -58,13 +58,15 @@ recyclerView.setAdapter(songAdapter);
                //code for play buttons goes here
 
                 if(mediaPlayer.isPlaying()){//stoping
-                   mediaPlayer.reset();
+                    releaseMediaPlayer();
                    b.setBackground(getResources().getDrawable(android.R.drawable.ic_media_play));
 
-
-
-                }else{//playing
+                }
+                // else{//playing
+                /*
                     try {
+
+                        mediaPlayer=MediaPlayer.create(MainActivity.this, Uri.parse(obj.getSongUrl()));
                         mediaPlayer.setDataSource(obj.getSongUrl());
                         mediaPlayer.prepare();
                         b.setBackground(getResources().getDrawable(android.R.drawable.ic_media_pause));
@@ -79,7 +81,12 @@ recyclerView.setAdapter(songAdapter);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                    */
+                mediaPlayer=MediaPlayer.create(MainActivity.this, Uri.parse(obj.getSongUrl()));
+                b.setBackground(getResources().getDrawable(android.R.drawable.ic_media_pause));
+                mediaPlayer.start();
+
+               //else statement ending }
 
             }
         });
@@ -154,4 +161,25 @@ recyclerView.setAdapter(songAdapter);
       }
 
     }
+
+    private void releaseMediaPlayer() {
+        // If the media player is not null, then it may be currently playing a sound.
+        if (mediaPlayer != null) {
+            // Regardless of the current state of the media player, release its resources
+            // because we no longer need it.
+            mediaPlayer.release();
+
+            // Set the media player back to null. For our code, we've decided that
+            // setting the media player to null is an easy way to tell that the media player
+            // is not configured to play an audio file at the moment.
+            mediaPlayer= null;
+            //  mAudioManager.abandonAudioFocus(afChangeListener);
+
+        }
+
+
+    }
+
+
+
 }
